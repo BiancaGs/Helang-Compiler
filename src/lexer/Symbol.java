@@ -3,6 +3,7 @@ package lexer;
 public enum Symbol {
 
     EOF("eof"), 
+    VAR("var"),
     INT("Int"),
     IDENT("Ident"), 
     SEMICOLON(";"), 
@@ -33,7 +34,8 @@ public enum Symbol {
     MULT("*"), 
     DIV("/"), 
     REMAINDER("%"),
-    DIGIT("Digit");
+    DIGIT("Digit"),
+    NUMBER("Number");
 
     Symbol(String name) {
         this.name = name;
