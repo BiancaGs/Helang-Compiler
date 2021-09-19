@@ -3,7 +3,7 @@ import java.util.Hashtable;
 
 import ast.*;
 import errorHandling.CompilerError;
-import lexer.Lexer;
+import lexer.*;
 
 public class Compiler {
 
@@ -19,6 +19,7 @@ public class Compiler {
         error.setLexer(lexer);
 
         lexer.nextToken();
+
         return program(pw);
     }
 
