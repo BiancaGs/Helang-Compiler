@@ -6,8 +6,8 @@ Stat ::=  AssignStat | IfStat | ForStat | PrintStat |
 
 AssignStat ::= Ident "=" Expr ";"
 
-IfStat ::= "if" Expr StatList [
-            "else" StatList ]
+IfStat ::= "if" Expr StatList [ "else" StatList ]
+
 ForStat ::= "for" Id "in" Expr ".." Expr StatList
 PrintStat ::= "print" Expr ";"
 PrintlnStat ::= "println" Expr ";"

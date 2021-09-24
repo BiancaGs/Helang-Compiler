@@ -65,7 +65,7 @@ public class Compiler {
         if (lexer.token == Symbol.IDENT) {
             stat = assignStat();
         } else if ( lexer.token == Symbol.IF) {
-            
+            stat = ifStat();
         } else if ( lexer.token == Symbol.FOR) {
             stat = forStat();
         } else if ( lexer.token == Symbol.PRINT) {
@@ -75,8 +75,26 @@ public class Compiler {
         } else if ( lexer.token == Symbol.WHILE) {
             
         }
-
         return null;
+    }
+
+    // IfStat ::= "if" Expr StatList [ "else" StatList ]
+    private IfStat ifStat() {
+
+        lexer.nextToken();
+
+        Expr expr = expr();
+
+        StatList leftStatList = statList();
+
+        StatList rightStatList = null;
+
+        if (lexer.token == Symbol.ELSE) {
+            lexer.nextToken();
+            rightStatList = statList();
+        }
+        
+        return new IfStat(expr, leftStatList, rightStatList);
     }
 
     // ForStat ::= "for" Id "in" Expr ".." Expr StatList
