@@ -60,23 +60,35 @@ public class Compiler {
     // - All above expressions classes will extend Stat
     private Stat stat() {
 
-        Stat stat;
+        Stat stat = null;
 
         if (lexer.token == Symbol.IDENT) {
             stat = assignStat();
-        } else if ( lexer.token == Symbol.IF) {
+        } else if (lexer.token == Symbol.IF) {
             stat = ifStat();
-        } else if ( lexer.token == Symbol.FOR) {
+        } else if (lexer.token == Symbol.FOR) {
             stat = forStat();
-        } else if ( lexer.token == Symbol.PRINT) {
+        } else if (lexer.token == Symbol.PRINT) {
             stat = printStat();
-        } else if ( lexer.token == Symbol.PRINTLN) {
+        } else if (lexer.token == Symbol.PRINTLN) {
             stat = printlnStat();
-        } else if ( lexer.token == Symbol.WHILE) {
-            
+        } else if (lexer.token == Symbol.WHILE) {
+            stat = whileStat();
         }
 
-        return null;
+        return stat;
+    }
+
+    // WhileStat ::= "while" Expr StatList
+    private WhileStat whileStat() {
+
+        lexer.nextToken();
+
+        Expr expr = expr();
+
+        StatList statList = statList();
+
+        return new WhileStat(expr, statList);
     }
 
     // PrintlnStat ::= "println" Expr ";"
