@@ -56,8 +56,51 @@ public class Compiler {
         return varList;
     }
 
-    // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
+    // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat 
+    // - All above expressions classes will extend Stat
     private Stat stat() {
+        Stat stat;
+
+        if (lexer.token == Symbol.IDENT) {
+            stat = assignStat();
+        } else if ( lexer.token == Symbol.IF) {
+            
+        } else if ( lexer.token == Symbol.FOR) {
+            
+        } else if ( lexer.token == Symbol.PRINT) {
+            
+        } else if ( lexer.token == Symbol.PRINTLN) {
+            
+        } else if ( lexer.token == Symbol.WHILE) {
+            
+        }
+
+        return null;
+    }
+
+    // AssignStat ::= Ident "=" Expr ";"
+    private AssignStat assignStat() {
+        
+        String ident = lexer.getStringValue();
+        lexer.nextToken();
+        
+        if (lexer.token != Symbol.ASSIGN) {
+            error.signal("= expected");
+        }
+        lexer.nextToken();
+
+        Expr expr = expr();
+
+        if (lexer.token != Symbol.SEMICOLON) {
+            error.signal("; expected");
+        }
+        lexer.nextToken();
+
+        return new AssignStat(ident, expr);
+    }
+
+    // Expr ::= AndExpr [ "||" AndExpr ]
+    private Expr expr() {
         return null;
     }
 
