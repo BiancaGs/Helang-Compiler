@@ -59,7 +59,7 @@ public class Compiler {
     // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat 
     // - All above expressions classes will extend Stat
     private Stat stat() {
-        
+
         Stat stat;
 
         if (lexer.token == Symbol.IDENT) {
@@ -112,7 +112,28 @@ public class Compiler {
 
     // StatList ::=  "{" { Stat } "}"
     private StatList statList() {
-        return null;
+
+        if (lexer.token != Symbol.LEFTBRACE) {
+            error.signal("{ expected");
+        }
+        lexer.nextToken();
+
+        // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
+        ArrayList<Stat> statList = new ArrayList<>();
+
+        while (lexer.token == Symbol.IDENT || lexer.token == Symbol.IF || lexer.token == Symbol.FOR
+                || lexer.token == Symbol.PRINT || lexer.token == Symbol.PRINTLN || lexer.token == Symbol.WHILE) {
+            Stat stat = stat();
+            statList.add(stat);
+            lexer.nextToken();
+        }
+
+        if (lexer.token != Symbol.RIGHTBRACE) {
+            error.signal("} expected");
+        }
+        lexer.nextToken();
+
+        return new StatList(statList);
     }
 
     // AssignStat ::= Ident "=" Expr ";"
