@@ -9,14 +9,15 @@
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "args": "src/tests/test1.in src/tests/out.txt"
+            "args": "src/tests/codigo01.he src/tests/out.txt"
         },
         {
             "type": "java",
             "name": "Launch Main",
             "request": "launch",
             "mainClass": "Main",
-            "projectName": "Helang-Compiler_906c54d8"
+            "projectName": "Helang-Compiler_906c54d8",
+            "args": "src/tests/codigo01.he src/tests/out.txt"
         }
     ]
 }
