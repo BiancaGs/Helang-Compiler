@@ -59,6 +59,7 @@ public class Compiler {
     // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat 
     // - All above expressions classes will extend Stat
     private Stat stat() {
+        
         Stat stat;
 
         if (lexer.token == Symbol.IDENT) {
@@ -66,7 +67,7 @@ public class Compiler {
         } else if ( lexer.token == Symbol.IF) {
             
         } else if ( lexer.token == Symbol.FOR) {
-            
+            stat = forStat();
         } else if ( lexer.token == Symbol.PRINT) {
             
         } else if ( lexer.token == Symbol.PRINTLN) {
@@ -75,6 +76,42 @@ public class Compiler {
             
         }
 
+        return null;
+    }
+
+    // ForStat ::= "for" Id "in" Expr ".." Expr StatList
+    private ForStat forStat() {
+
+        lexer.nextToken();
+
+        if (lexer.token != Symbol.IDENT) {
+            error.signal("Identifier expected");
+        }
+        
+        String ident = lexer.getStringValue();
+        lexer.nextToken();
+
+        if (lexer.token != Symbol.IN) {
+            error.signal("in expected");
+        }
+        lexer.nextToken();
+
+        Expr leftExpr = expr();
+        
+        if (lexer.token != Symbol.DOTDOT) {
+            error.signal(".. expected");
+        }
+        lexer.nextToken();
+
+        Expr rightExpr = expr();
+
+        StatList statList = statList();
+        
+        return new ForStat(ident, leftExpr, rightExpr, statList);
+    }
+
+    // StatList ::=  "{" { Stat } "}"
+    private StatList statList() {
         return null;
     }
 
