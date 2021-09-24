@@ -69,13 +69,44 @@ public class Compiler {
         } else if ( lexer.token == Symbol.FOR) {
             stat = forStat();
         } else if ( lexer.token == Symbol.PRINT) {
-            
+            stat = printStat();
         } else if ( lexer.token == Symbol.PRINTLN) {
-            
+            stat = printlnStat();
         } else if ( lexer.token == Symbol.WHILE) {
             
         }
+
         return null;
+    }
+
+    // PrintlnStat ::= "println" Expr ";"
+    private PrintlnStat printlnStat() {
+
+        lexer.nextToken();
+
+        Expr expr = expr();
+
+        if (lexer.token != Symbol.SEMICOLON) {
+            error.signal("; expected");
+        }
+        lexer.nextToken();
+        
+        return new PrintlnStat(expr);
+    }
+
+    // PrintStat ::= "print" Expr ";"
+    private PrintStat printStat() {
+
+        lexer.nextToken();
+
+        Expr expr = expr();
+
+        if (lexer.token != Symbol.SEMICOLON) {
+            error.signal("; expected");
+        }
+        lexer.nextToken();
+        
+        return new PrintStat(expr);
     }
 
     // IfStat ::= "if" Expr StatList [ "else" StatList ]
