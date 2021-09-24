@@ -28,7 +28,6 @@ public class Compiler {
     private Program program() {
 
         VarList varList = varList();
-        lexer.nextToken();
 
         // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
         ArrayList<Stat> statList = new ArrayList<>();
