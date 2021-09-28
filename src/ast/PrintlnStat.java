@@ -9,4 +9,10 @@ public class PrintlnStat extends Stat {
         this.expr = expr;
 	}
 
+    @Override
+    public void genC(PW pw) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

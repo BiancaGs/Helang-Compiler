@@ -11,4 +11,10 @@ public class WhileStat extends Stat {
         this.statList = statList;
     }
 
+    @Override
+    public void genC(PW pw) {
+        
+        
+    }
+
 }

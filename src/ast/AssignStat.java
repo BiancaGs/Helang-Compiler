@@ -11,4 +11,12 @@ public class AssignStat extends Stat {
         this.expr = expr;
     }
 
+    @Override
+    public void genC(PW pw) {
+        pw.print(ident);
+        pw.print("= ");
+        expr.genC(pw);
+        pw.println(";");
+    }
+
 }

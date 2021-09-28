@@ -1,8 +1,6 @@
 package ast;
 
 // Stat ::=  AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
-public class Stat {
-
-    public void genC(PW pw) {
-    }
+abstract public class Stat {
+    abstract public void genC(PW pw);
 }

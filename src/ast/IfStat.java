@@ -12,5 +12,11 @@ public class IfStat extends Stat {
         this.leftStatList = leftStatList;
         this.rightStatList = rightStatList;
     }
+
+    @Override
+    public void genC(PW pw) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
