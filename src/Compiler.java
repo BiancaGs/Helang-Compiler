@@ -8,13 +8,13 @@ import lexer.*;
 
 public class Compiler {
 
-    private Hashtable symbolTable;
+    private Hashtable<String, Object> symbolTable;
     private CompilerError error;
     private Lexer lexer;
 
     public Program compile(char[] input, PrintWriter outError, PW pw) {
 
-        symbolTable = new Hashtable();
+        symbolTable = new Hashtable<>();
         error = new CompilerError(outError);
         lexer = new Lexer(input, error);
         error.setLexer(lexer);
@@ -32,10 +32,8 @@ public class Compiler {
         // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
         ArrayList<Stat> statList = new ArrayList<>();
 
-        while (
-            lexer.token == Symbol.IDENT || lexer.token == Symbol.IF || lexer.token == Symbol.FOR || 
-            lexer.token == Symbol.PRINT || lexer.token == Symbol.PRINTLN || lexer.token == Symbol.WHILE
-        ) {
+        while (lexer.token == Symbol.IDENT || lexer.token == Symbol.IF || lexer.token == Symbol.FOR
+                || lexer.token == Symbol.PRINT || lexer.token == Symbol.PRINTLN || lexer.token == Symbol.WHILE) {
             Stat stat = stat();
             statList.add(stat);
         }
@@ -51,6 +49,13 @@ public class Compiler {
         while (lexer.token == Symbol.VAR) {
             lexer.nextToken();
             Variable var = variable();
+
+            if (symbolTable.get(var.getName()) != null) {
+                error.signal("Variable '" + var.getName() + "' already declared");
+            } else {
+                symbolTable.put(var.getName(), var);
+            }
+
             varList.addVar(var);
         }
 
@@ -153,6 +158,11 @@ public class Compiler {
         String ident = lexer.getStringValue();
         lexer.nextToken();
 
+        // Test if variable was declared
+        if (symbolTable.get(ident) == null) {
+            error.signal("Variable '" + ident + "' was not declared");
+        }
+
         if (lexer.token != Symbol.IN) {
             error.signal("in expected");
         }
@@ -203,6 +213,11 @@ public class Compiler {
 
         String ident = lexer.getStringValue();
         lexer.nextToken();
+
+        // Test if variable was declared
+        if (symbolTable.get(ident) == null) {
+            error.signal("Variable '" + ident + "' was not declared");
+        }
 
         if (lexer.token != Symbol.ASSIGN) {
             error.signal("= expected");
@@ -342,14 +357,12 @@ public class Compiler {
                 }
                 String ident = lexer.getStringValue();
                 lexer.nextToken();
-                
-                Variable v = new Variable(ident);
-                // Variable v = symbolTable.get(ident);
-                // // semantic analysis
-                // // was the variable declared ?
-                // if (v == null) {
-                //     error.signal("Variable " + ident + " was not declared");
-                // }
+
+                // Test if variable was declared
+                Variable v = (Variable) symbolTable.get(ident);
+                if (v == null) {
+                    error.signal("Variable '" + ident + "' was not declared");
+                }
 
                 return new VariableExpr(v);
         }
