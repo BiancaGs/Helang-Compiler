@@ -12,4 +12,8 @@ public class Variable {
     public String getName() {
         return ident;
     }
+
+    public void genC(PW pw) {
+        pw.print(ident);
+    }
 }

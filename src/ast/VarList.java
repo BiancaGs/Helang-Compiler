@@ -14,4 +14,15 @@ public class VarList {
     public void addVar(Variable var) {
         varList.add(var);
     }
+
+	public void genC(PW pw) {
+
+        for (Variable var : varList) {
+            pw.print("int ");
+            var.genC(pw);
+            pw.println(";");
+        }
+
+	}
+
 }
