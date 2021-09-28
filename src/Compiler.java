@@ -56,7 +56,7 @@ public class Compiler {
         return varList;
     }
 
-    // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat 
+    // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
     // - All above expressions classes will extend Stat
     private Stat stat() {
 
@@ -102,7 +102,7 @@ public class Compiler {
             error.signal("; expected");
         }
         lexer.nextToken();
-        
+
         return new PrintlnStat(expr);
     }
 
@@ -117,7 +117,7 @@ public class Compiler {
             error.signal("; expected");
         }
         lexer.nextToken();
-        
+
         return new PrintStat(expr);
     }
 
@@ -136,7 +136,7 @@ public class Compiler {
             lexer.nextToken();
             rightStatList = statList();
         }
-        
+
         return new IfStat(expr, leftStatList, rightStatList);
     }
 
@@ -148,7 +148,7 @@ public class Compiler {
         if (lexer.token != Symbol.IDENT) {
             error.signal("Identifier expected");
         }
-        
+
         String ident = lexer.getStringValue();
         lexer.nextToken();
 
@@ -158,7 +158,7 @@ public class Compiler {
         lexer.nextToken();
 
         Expr leftExpr = expr();
-        
+
         if (lexer.token != Symbol.DOTDOT) {
             error.signal(".. expected");
         }
@@ -167,11 +167,11 @@ public class Compiler {
         Expr rightExpr = expr();
 
         StatList statList = statList();
-        
+
         return new ForStat(ident, leftExpr, rightExpr, statList);
     }
 
-    // StatList ::=  "{" { Stat } "}"
+    // StatList ::= "{" { Stat } "}"
     private StatList statList() {
 
         if (lexer.token != Symbol.LEFTBRACE) {
@@ -199,10 +199,10 @@ public class Compiler {
 
     // AssignStat ::= Ident "=" Expr ";"
     private AssignStat assignStat() {
-        
+
         String ident = lexer.getStringValue();
         lexer.nextToken();
-        
+
         if (lexer.token != Symbol.ASSIGN) {
             error.signal("= expected");
         }
@@ -220,6 +220,95 @@ public class Compiler {
 
     // Expr ::= AndExpr [ "||" AndExpr ]
     private Expr expr() {
+        Expr leftExpr, rightExpr;
+        
+        leftExpr = andExpr();
+
+        if (lexer.token == Symbol.OR) {
+            lexer.nextToken();
+            rightExpr = andExpr();
+
+            leftExpr = new CompositeExpr(leftExpr, Symbol.OR, rightExpr);
+        }
+
+        return leftExpr;
+    }
+
+    // AndExpr ::= RelExpr [ "&&" RelExpr ]
+    private Expr andExpr() {
+        Expr leftExpr, rightExpr;
+        
+        leftExpr = relExpr();
+
+        if (lexer.token == Symbol.AND) {
+            lexer.nextToken();
+            rightExpr = relExpr();
+
+            leftExpr = new CompositeExpr(leftExpr, Symbol.AND, rightExpr);
+        }
+
+        return leftExpr;
+    }
+
+    // RelExpr ::= AddExpr [ RelOp AddExpr ]
+    //      RelOp ::= ’<’ | ’<=’ | ’>’ | ’>=’| ’==’ | ’!=’
+    private Expr relExpr() {
+        Expr leftExpr, rightExpr;
+        
+        leftExpr = addExpr();
+
+        if (
+            lexer.token == Symbol.LT || lexer.token == Symbol.LE || lexer.token == Symbol.GT || 
+            lexer.token == Symbol.GE || lexer.token == Symbol.EQ || lexer.token == Symbol.NEQ
+        ) {
+            Symbol op = lexer.token;
+            lexer.nextToken();
+            rightExpr = addExpr();
+
+            leftExpr = new CompositeExpr(leftExpr, op, rightExpr);
+        }
+
+        return leftExpr;
+    }
+
+    // AddExpr ::= MultExpr { AddOp MultExpr }
+    //      AddOp ::= ’+’| ’-’
+    private Expr addExpr() {
+        Expr leftExpr, rightExpr;
+        
+        leftExpr = multExpr();
+
+        while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS) {
+            Symbol op = lexer.token;
+            lexer.nextToken();
+            rightExpr = multExpr();
+
+            leftExpr = new CompositeExpr(leftExpr, op, rightExpr);
+        }
+
+        return leftExpr;
+    }
+
+    // MultExpr ::= SimpleExpr { MultOp SimpleExpr }
+    private Expr multExpr() {
+
+		Expr leftExpr, rightExpr;
+        
+        leftExpr = simpleExpr();
+
+        while (lexer.token == Symbol.MULT || lexer.token == Symbol.DIV || lexer.token == Symbol.REMAINDER) {
+            Symbol op = lexer.token;
+            lexer.nextToken();
+            rightExpr = simpleExpr();
+
+            leftExpr = new CompositeExpr(leftExpr, op, rightExpr);
+        }
+
+        return leftExpr;
+	}
+
+    // SimpleExpr ::= Number | ’(’ Expr ’)’ | "!" SimpleExpr | AddOp SimpleExpr | Ident
+	private Expr simpleExpr() {
         return null;
     }
 
