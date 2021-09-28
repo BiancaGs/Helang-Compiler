@@ -11,4 +11,14 @@ public class StatList {
         this.statList = statList;
     }
 
+    public void genC(PW pw) {
+        pw.println("{");
+        pw.add();
+        for (Stat stat : statList) {
+            stat.genC(pw);
+        }
+        pw.sub();
+        pw.println("}");
+    }
+
 }

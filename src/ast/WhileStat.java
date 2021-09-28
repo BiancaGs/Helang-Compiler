@@ -13,8 +13,10 @@ public class WhileStat extends Stat {
 
     @Override
     public void genC(PW pw) {
-        
-        
+        pw.print("while ( ");
+        expr.genC(pw);
+        pw.print(")");
+        statList.genC(pw);
     }
 
 }

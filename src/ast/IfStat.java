@@ -15,8 +15,14 @@ public class IfStat extends Stat {
 
     @Override
     public void genC(PW pw) {
-        // TODO Auto-generated method stub
-        
+        pw.print("if (");
+        expr.genC(pw);
+        pw.print(")");
+        leftStatList.genC(pw);
+        if (rightStatList != null) {
+            pw.print("else ");
+            rightStatList.genC(pw);
+        }
     }
     
 }
