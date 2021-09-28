@@ -32,14 +32,15 @@ public class Compiler {
         // Stat ::= AssignStat | IfStat | ForStat | PrintStat | PrintlnStat | WhileStat
         ArrayList<Stat> statList = new ArrayList<>();
 
-        while (lexer.token == Symbol.IDENT || lexer.token == Symbol.IF || lexer.token == Symbol.FOR
-                || lexer.token == Symbol.PRINT || lexer.token == Symbol.PRINTLN || lexer.token == Symbol.WHILE) {
+        while (
+            lexer.token == Symbol.IDENT || lexer.token == Symbol.IF || lexer.token == Symbol.FOR || 
+            lexer.token == Symbol.PRINT || lexer.token == Symbol.PRINTLN || lexer.token == Symbol.WHILE
+        ) {
             Stat stat = stat();
             statList.add(stat);
-            lexer.nextToken();
         }
 
-        return null;
+        return new Program(varList, statList);
     }
 
     // VarList ::= { "var" Int Ident ";" }
@@ -221,7 +222,7 @@ public class Compiler {
     // Expr ::= AndExpr [ "||" AndExpr ]
     private Expr expr() {
         Expr leftExpr, rightExpr;
-        
+
         leftExpr = andExpr();
 
         if (lexer.token == Symbol.OR) {
@@ -237,7 +238,7 @@ public class Compiler {
     // AndExpr ::= RelExpr [ "&&" RelExpr ]
     private Expr andExpr() {
         Expr leftExpr, rightExpr;
-        
+
         leftExpr = relExpr();
 
         if (lexer.token == Symbol.AND) {
@@ -251,16 +252,14 @@ public class Compiler {
     }
 
     // RelExpr ::= AddExpr [ RelOp AddExpr ]
-    //      RelOp ::= ’<’ | ’<=’ | ’>’ | ’>=’| ’==’ | ’!=’
+    // RelOp ::= ’<’ | ’<=’ | ’>’ | ’>=’| ’==’ | ’!=’
     private Expr relExpr() {
         Expr leftExpr, rightExpr;
-        
+
         leftExpr = addExpr();
 
-        if (
-            lexer.token == Symbol.LT || lexer.token == Symbol.LE || lexer.token == Symbol.GT || 
-            lexer.token == Symbol.GE || lexer.token == Symbol.EQ || lexer.token == Symbol.NEQ
-        ) {
+        if (lexer.token == Symbol.LT || lexer.token == Symbol.LE || lexer.token == Symbol.GT || lexer.token == Symbol.GE
+                || lexer.token == Symbol.EQ || lexer.token == Symbol.NEQ) {
             Symbol op = lexer.token;
             lexer.nextToken();
             rightExpr = addExpr();
@@ -272,10 +271,10 @@ public class Compiler {
     }
 
     // AddExpr ::= MultExpr { AddOp MultExpr }
-    //      AddOp ::= ’+’| ’-’
+    // AddOp ::= ’+’| ’-’
     private Expr addExpr() {
         Expr leftExpr, rightExpr;
-        
+
         leftExpr = multExpr();
 
         while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS) {
@@ -292,8 +291,8 @@ public class Compiler {
     // MultExpr ::= SimpleExpr { MultOp SimpleExpr }
     private Expr multExpr() {
 
-		Expr leftExpr, rightExpr;
-        
+        Expr leftExpr, rightExpr;
+
         leftExpr = simpleExpr();
 
         while (lexer.token == Symbol.MULT || lexer.token == Symbol.DIV || lexer.token == Symbol.REMAINDER) {
@@ -305,11 +304,65 @@ public class Compiler {
         }
 
         return leftExpr;
-	}
+    }
 
-    // SimpleExpr ::= Number | ’(’ Expr ’)’ | "!" SimpleExpr | AddOp SimpleExpr | Ident
-	private Expr simpleExpr() {
-        return null;
+    // SimpleExpr ::= Number | ’(’ Expr ’)’ | "!" SimpleExpr | AddOp SimpleExpr |
+    // Ident
+    private Expr simpleExpr() {
+        Expr e;
+
+        switch (lexer.token) {
+            case NUMBER:
+            case DIGIT:
+                return number();
+            case LEFTPAR:
+                lexer.nextToken();
+                e = expr();
+                if (lexer.token != Symbol.RIGHTPAR) {
+                    error.signal(") expected");
+                }
+                lexer.nextToken();
+                return e;
+            case NOT:
+                lexer.nextToken();
+                e = simpleExpr();
+                return e;
+            case PLUS:
+                lexer.nextToken();
+                e = simpleExpr();
+                return e;
+            case MINUS:
+                lexer.nextToken();
+                e = simpleExpr();
+                return e;
+            default:
+                // An identifier
+                if (lexer.token != Symbol.IDENT) {
+                    error.signal("Identifier expected");
+                }
+                String ident = lexer.getStringValue();
+                lexer.nextToken();
+                
+                Variable v = new Variable(ident);
+                // Variable v = symbolTable.get(ident);
+                // // semantic analysis
+                // // was the variable declared ?
+                // if (v == null) {
+                //     error.signal("Variable " + ident + " was not declared");
+                // }
+
+                return new VariableExpr(v);
+        }
+
+    }
+
+    // Number ::= [’+’|’-’] Digit { Digit }
+    private NumberExpr number() {
+
+        int value = lexer.getNumberValue();
+        lexer.nextToken();
+
+        return new NumberExpr(value);
     }
 
     /**
