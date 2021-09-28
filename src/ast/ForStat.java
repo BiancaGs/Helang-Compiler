@@ -17,8 +17,15 @@ public class ForStat extends Stat {
 
     @Override
     public void genC(PW pw) {
-        // TODO Auto-generated method stub
-        
+        pw.print("for ( " + ident + " = ");
+        leftExpr.genC(pw);
+        pw.print(";");
+        pw.print(ident + " <= ");
+        rightExpr.genC(pw);
+        pw.print(";");
+        pw.print(ident + "++");
+        pw.print(")");
+        statList.genC(pw);
     }
 
 }
