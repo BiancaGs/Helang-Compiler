@@ -11,8 +11,9 @@ public class PrintStat extends Stat {
 
 	@Override
 	public void genC(PW pw) {
-		// TODO Auto-generated method stub
-		
+        pw.print("printf(\"%d\", ");
+        expr.genC(pw);
+        pw.print(" );");
 	}
 
 }

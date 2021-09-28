@@ -21,4 +21,6 @@ int main() {
          somaFor         = (somaFor + (k * k))         ;
       }
    }
+   printf("%d\n", soma    );
+   printf("%d\n", somaFor    );
 }
