@@ -16,13 +16,11 @@ public class VarList {
     }
 
 	public void genC(PW pw) {
-
         for (Variable var : varList) {
             pw.print("int ");
             var.genC(pw);
             pw.println(";");
         }
-
 	}
 
 }
