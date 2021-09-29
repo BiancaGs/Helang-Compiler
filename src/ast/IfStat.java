@@ -25,4 +25,9 @@ public class IfStat extends Stat {
         }
     }
 
+    @Override
+    public int run() {
+        return 0;
+    }
+
 }

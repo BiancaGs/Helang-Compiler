@@ -23,4 +23,8 @@ public class Variable {
         pw.print(ident);
     }
 
+    public int run() {
+        return value;
+    }
+
 }

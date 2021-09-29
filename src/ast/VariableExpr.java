@@ -1,7 +1,7 @@
 package ast;
 
 public class VariableExpr extends Expr {
-    
+
     private Variable v;
 
     public VariableExpr(Variable v) {
@@ -11,6 +11,11 @@ public class VariableExpr extends Expr {
     @Override
     public void genC(PW pw) {
         pw.out.print(v.getName());
+    }
+
+    @Override
+    public int run() {
+        return v.run();
     }
 
 }

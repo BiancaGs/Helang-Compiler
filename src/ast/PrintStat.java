@@ -16,4 +16,9 @@ public class PrintStat extends Stat {
         pw.print(" );");
     }
 
+    @Override
+    public int run() {
+        return expr.run();
+    }
+
 }

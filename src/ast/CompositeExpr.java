@@ -22,4 +22,31 @@ public class CompositeExpr extends Expr {
         pw.out.print(")");
     }
 
+    @Override
+    public int run() {
+        int runLeft = left.run();
+        int runRight = right.run();
+
+        switch (oper) {
+            case PLUS:
+                return runLeft + runRight;
+            case MINUS:
+                return runLeft - runRight;
+            case MULT:
+                return runLeft * runRight;
+            case DIV:
+                if (runRight == 0) {
+                    throw new Error("Trying to divide by zero");
+                }
+                return runLeft / runRight;
+            case REMAINDER:
+                if (runRight == 0) {
+                    throw new Error("Trying to divide by zero");
+                }
+                return runLeft / runRight;
+            default:
+                return 0;
+        }
+    }
+
 }

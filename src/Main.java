@@ -75,14 +75,14 @@ public class Main {
                 System.out.println(e);
             }
             if (program != null) {
-                
+
                 program.genC(pw);
                 if (printWriter.checkError()) {
                     System.out.println("There was an error in the output");
                 }
 
                 // Run program
-                //System.out.println("Value: " + program.run());
+                System.out.println("Value: " + program.run());
             }
         }
     }

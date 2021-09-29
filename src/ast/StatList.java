@@ -21,4 +21,8 @@ public class StatList {
         pw.println("}");
     }
 
+    public int run() {
+        return 0;
+    }
+
 }

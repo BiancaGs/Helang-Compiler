@@ -13,6 +13,16 @@ public class Program {
         this.statList = statList;
     }
 
+    public int run() {
+        int t = 0;
+
+        for (Stat stat : statList) {
+            t += stat.run();
+        }
+
+        return t;
+    }
+
     public void genC(PW pw) {
 
         // Create C headers

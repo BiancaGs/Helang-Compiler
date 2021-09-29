@@ -28,4 +28,9 @@ public class ForStat extends Stat {
         statList.genC(pw);
     }
 
+    @Override
+    public int run() {
+        return statList.run();
+    }
+
 }

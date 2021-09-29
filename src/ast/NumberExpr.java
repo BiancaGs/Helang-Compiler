@@ -1,7 +1,7 @@
 package ast;
 
 public class NumberExpr extends Expr {
-    
+
     private int value;
 
     public NumberExpr(int value) {
@@ -15,6 +15,11 @@ public class NumberExpr extends Expr {
     @Override
     public void genC(PW pw) {
         pw.out.print(value);
+    }
+
+    @Override
+    public int run() {
+        return value;
     }
 
 }
