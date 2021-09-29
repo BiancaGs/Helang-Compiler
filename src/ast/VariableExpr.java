@@ -13,9 +13,4 @@ public class VariableExpr extends Expr {
         pw.out.print(v.getName());
     }
 
-    // @Override
-    // public Type getType() {
-    //     return v.getType();
-    // }
-
 }

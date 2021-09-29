@@ -17,7 +17,7 @@ public class ForStat extends Stat {
 
     @Override
     public void genC(PW pw) {
-        pw.print("for ( " + ident + " = ");
+        pw.print("for ( int " + ident + " = ");
         leftExpr.genC(pw);
         pw.print(";");
         pw.print(ident + " <= ");

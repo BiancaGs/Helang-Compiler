@@ -24,5 +24,5 @@ public class IfStat extends Stat {
             rightStatList.genC(pw);
         }
     }
-    
+
 }

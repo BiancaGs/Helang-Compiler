@@ -162,7 +162,7 @@ public class Compiler {
         if (symbolTable.get(ident) != null) {
             error.signal("Variable '" + ident + "' already declared");
         } else {
-            symbolTable.put(ident, new Variable(ident));
+            symbolTable.put(ident, new Variable(ident, 0));
         }
 
         if (lexer.token != Symbol.IN) {
@@ -404,7 +404,7 @@ public class Compiler {
         }
         lexer.nextToken();
 
-        return new Variable(ident);
+        return new Variable(ident, 0);
     }
 
 }

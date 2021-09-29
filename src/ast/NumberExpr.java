@@ -17,8 +17,4 @@ public class NumberExpr extends Expr {
         pw.out.print(value);
     }
 
-    // @Override
-    // public Type getType() {
-    // return Type.integerType;
-    // }
 }

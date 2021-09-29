@@ -9,7 +9,7 @@
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "args": "src/tests/codigo02.he src/tests/out2.c"
+            "args": "src/tests/codigo01.he src/tests/out1.c"
         },
         {
             "type": "java",
@@ -17,7 +17,7 @@
             "request": "launch",
             "mainClass": "Main",
             "projectName": "Helang-Compiler_906c54d8",
-            "args": "src/tests/codigo02.he src/tests/out2.c"
+            "args": "src/tests/codigo01.he src/tests/out1.c"
         }
     ]
 }

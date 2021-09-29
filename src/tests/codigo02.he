@@ -2,6 +2,6 @@ var Int s;
 var Int i;
 s = 0;
 for j in 1..100 {
-    s=s+j
+    s=s+j;
 }
 println s;

@@ -6,21 +6,20 @@ import lexer.Lexer;
 
 public class CompilerError {
 
-    public CompilerError( PrintWriter out ) {
-          // output of an error is done in out
+    public CompilerError(PrintWriter out) {
         this.out = out;
     }
 
-    public void setLexer( Lexer lexer ) {
+    public void setLexer(Lexer lexer) {
         this.lexer = lexer;
     }
 
-    public void signal( String strMessage ) {
+    public void signal(String strMessage) {
         out.println("Error at line " + lexer.getLineNumber() + ": ");
         out.println(lexer.getCurrentLine());
-        out.println( strMessage );
-        if ( out.checkError() )
-          System.out.println("Error in signaling an error");
+        out.println(strMessage);
+        if (out.checkError())
+            System.out.println("Error in signaling an error");
         throw new RuntimeException(strMessage);
     }
 

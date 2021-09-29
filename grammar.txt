@@ -9,17 +9,14 @@ PrintStat ::= "print" Expr ";"
 PrintlnStat ::= "println" Expr ";"
 StatList ::=  "{" { Stat } "}"
 WhileStat ::= "while" Expr StatList
-
 Expr ::= AndExpr [ "||" AndExpr ]
 AndExpr ::= RelExpr [ "&&" RelExpr ]
 RelExpr ::= AddExpr [ RelOp AddExpr ]
 AddExpr ::= MultExpr { AddOp MultExpr }
 MultExpr ::= SimpleExpr { MultOp SimpleExpr }
-
 SimpleExpr ::= Number | ’(’ Expr ’)’ | "!" SimpleExpr
                 | AddOp SimpleExpr | Ident
-
 RelOp ::= ’<’ | ’<=’ | ’>’ | ’>=’| ’==’ | ’!=’
 AddOp ::= ’+’| ’-’
-MultOp ::= ’*’ | ’/’ | ’%’
+MultOp ::= ’*’ | ’/’ | '%’
 Number ::= [’+’|’-’] Digit { Digit }

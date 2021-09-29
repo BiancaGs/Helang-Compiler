@@ -2,7 +2,7 @@ package ast;
 
 // AssignStat ::= Ident "=" Expr ";"
 public class AssignStat extends Stat {
-    
+
     private String ident;
     private Expr expr;
 
