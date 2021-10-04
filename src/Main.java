@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import ast.*;
 
 public class Main {
-
+    
     public static void main(String[] args) {
 
         File file;
