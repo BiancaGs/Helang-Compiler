@@ -1,3 +1,4 @@
+package main;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,9 +19,8 @@ public class Main {
 
     public void mainCode(String[] args) {
         // Parâmetros
-        // 0 -> flag
-        // 1 -> path do arquivo
-        // 2 -> path do output
+        // 0 -> Flag
+        // 1 -> Path do Arquivo
 
         File file;
         FileReader stream;
@@ -29,7 +29,7 @@ public class Main {
 
         if (args.length != 2) {
             System.out.println("Usage:\nMain flag input");
-            System.out.println("input file to be compiled");
+            System.out.println("Input file to be compiled");
         } else {
             String flag = args[0];
             String filePath = args[1];
@@ -75,15 +75,8 @@ public class Main {
             }
 
             Compiler compiler = new Compiler();
-            FileOutputStream outputStream;
-            try {
-                outputStream = new FileOutputStream("out.c");
-            } catch (IOException e) {
-                System.out.println("File " + "out.c" + " could not be opened for writing");
-                throw new RuntimeException();
-            }
 
-            PrintWriter printWriter = new PrintWriter(outputStream);
+            PrintWriter printWriter = new PrintWriter(new PrintWriter(System.out));
             PW pw = new PW();
             pw.set(printWriter);
 
